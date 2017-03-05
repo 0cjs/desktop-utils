@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+#  Output markup for a vertical clock in an xfce4-genmon-plugin
+#
+#  This was tested with the "Default Font" (Sans Regular 10, I think)
+#  on a 1920x1080 desktop.
+#
+#  Documentation:
+#    /usr/share/doc/xfce4-genmon-plugin/README
+#    https://goodies.xfce.org/projects/panel-plugins/xfce4-genmon-plugin
+#    https://developer.gnome.org/pango/stable/PangoMarkupFormat.html
+#
+#  Bugs: Some marked-up text doesn't center properly in the vertical,
+#    including weight='Bold' and size='Large'.
+#
+
+# Panel Text
+sep="<span size='xx-small' strikethrough='true'>                        </span>"
+spc="<span size='xx-small'>                        </span>\n"
+mw="<span size='small'> $(date +%0d)\n$(date +%a)</span>\n"
+wm="<span size='small'>$(date +%a)\n $(date +%0d)</span>\n"
+ct="<span size='xx-small'>$(TZ=US/Central date +%H) CT</span>\n"
+utc="<span size='xx-small'>$(date -u +%H) UT</span>\n"
+hm="<span color='#e0e0e0' size='medium'> $(date +%H)\n $(date +%M)</span>"
+echo "<txt>$sep\n$ct$utc$hm\n$wm$sep</txt>"
+
+# Tooltip - markup cannot be used here
+#
+tcent="$(TZ=US/Central date +"%Y-%m-%d  %H:%M")  US/Central"
+tutc="$(date -u +"%Y-%m-%d  %H:%M")  UTC"
+tlocal="$(date +"%Y-%m-%d  %H:%M")  Local"
+echo "<tool>$tcent\n$tutc\n$tlocal</tool>"
