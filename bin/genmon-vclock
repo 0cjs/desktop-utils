@@ -26,7 +26,8 @@ echo "<txt>$sep\n$ct$utc$hm\n$wm$sep</txt>"
 
 # Tooltip - markup cannot be used here
 #
-tcent="$(TZ=US/Central date +"%Y-%m-%d  %H:%M")  US/Central"
-tutc="$(date -u +"%Y-%m-%d  %H:%M")  UTC"
-tlocal="$(date +"%Y-%m-%d  %H:%M")  Local"
-echo "<tool>$tcent\n$tutc\n$tlocal</tool>"
+zone() {
+    local zone="$1"
+    echo "$(TZ="$zone" date +"%Y-%m-%d  %H:%M")  $zone"
+}
+echo "<tool>$(zone US/Central)\n$(zone US/Pacific)\n$(zone UTC)\n$(zone Europe/London)\n$(zone Asia/Tokyo)</tool>"
