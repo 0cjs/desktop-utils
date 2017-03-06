@@ -82,26 +82,54 @@ print_extended_color_table() {
     done
 }
 
+set_path0() {     # This is portable; don't touch it!
+    path0="$0"
+    local dir
+    while [ -h "$path0" ]; do
+        dir="$(cd "$(dirname "$path0")" && pwd -P)"
+        path0="$(readlink "$path0")";
+        [ "$(echo "$path0" | cut -b 1)" = / ] || path0="$dir/$path0"
+    done
+}
+
 usage() {
     cat >&2 <<-_____
 	Usage: $(basename "$0") [-e] [-l]
 	    -e      Show extended colors
 	    -l      Pipe ouput through less
+	    -r      Reload ~/.Xresources before starting terminals
+	    -t PRG  Open a new terminal PRG (e.g., "xterm") and run this in it
 	_____
     exit 2
 }
 
 ############################################################
 
+opts=()                 # For use if we run ourself
 opt_extended=false
+opt_terms=()
 output_filter=cat
 while true; do case "$1" in
-    -e)     opt_extended=true; shift;;
+    -e)     opt_extended=true; opts+=(-e); shift;;
     -l)     output_filter='less -+E -e -+F -r'; shift;;
+    -r)     xrdb -cpp cpp -merge $HOME/.Xresources; shift;;
+    -t)     shift; opt_terms+=("$1"); shift;;
     -*)     usage;;
     *)      break;;
 esac; done
 
-{   print_color_table
-    $opt_extended && print_extended_color_table
-} | $output_filter
+if [ -z "$opt_terms" ]; then
+    {   print_color_table
+	$opt_extended && print_extended_color_table
+    } | $output_filter
+else
+    set_path0
+    declare -i x=50
+    for term in "${opt_terms[@]}"; do
+	title="$term $(basename "$path0") $BASHPID"
+        "$term" -geometry 80x40+$x-50 -title "$title" \
+	    -e "$path0" -l "${opts[@]}" &
+        sleep 0.25  # Give window time to map
+	x+="$(xwininfo -name "$title" | sed -n -e 's/^ *Width: //p')"
+    done
+fi
