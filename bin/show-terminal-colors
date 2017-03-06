@@ -22,60 +22,65 @@ sgr() {
     echo -n -e "\e[${codes}m"
 }
 
-while read code name; do
-    printf "%6s $(sgr $code)This is $name text.$(sgr)\n" "$code"
-done <<_____
-00      normal
-01      bold
-02      faint
-03      italic
-04      underline
-07      inverse
-08      concealed
-09      crossed-out
-10      primary font
-11      alternate font 1
-12      alternate font 2
-30      foreground color 0 (black)
-31      foreground color 1 (red)
-32      foreground color 2 (green)
-33      foreground color 3 (yellow)
-34      foreground color 4 (blue)
-35      foreground color 5 (magenta)
-36      foreground color 6 (cyan)
-37      foreground color 7 (white)
-1;30    foreground color 0 bold (black)
-1;31    foreground color 1 bold (red)
-1;32    foreground color 2 bold (green)
-1;33    foreground color 3 bold (yellow)
-1;34    foreground color 4 bold (blue)
-1;35    foreground color 5 bold (magenta)
-1;36    foreground color 6 bold (cyan)
-1;37    foreground color 7 bold (white)
-40      background color 0 (black)
-41      background color 1 (red)
-42      background color 2 (green)
-43      background color 3 (yellow)
-44      background color 4 (blue)
-45      background color 5 (magenta)
-46      background color 6 (cyan)
-47      background color 7 (white)
-51      framed
-52      encircled
-53      overlined
+print_color_table() {
+    while read code name; do
+        printf "%6s $(sgr $code)This is $name text.$(sgr)\n" "$code"
+    done <<_____
+        00      normal
+        01      bold
+        02      faint
+        03      italic
+        04      underline
+        07      inverse
+        08      concealed
+        09      crossed-out
+        10      primary font
+        11      alternate font 1
+        12      alternate font 2
+        30      foreground color 0 (black)
+        31      foreground color 1 (red)
+        32      foreground color 2 (green)
+        33      foreground color 3 (yellow)
+        34      foreground color 4 (blue)
+        35      foreground color 5 (magenta)
+        36      foreground color 6 (cyan)
+        37      foreground color 7 (white)
+        1;30    foreground color 0 bold (black)
+        1;31    foreground color 1 bold (red)
+        1;32    foreground color 2 bold (green)
+        1;33    foreground color 3 bold (yellow)
+        1;34    foreground color 4 bold (blue)
+        1;35    foreground color 5 bold (magenta)
+        1;36    foreground color 6 bold (cyan)
+        1;37    foreground color 7 bold (white)
+        40      background color 0 (black)
+        41      background color 1 (red)
+        42      background color 2 (green)
+        43      background color 3 (yellow)
+        44      background color 4 (blue)
+        45      background color 5 (magenta)
+        46      background color 6 (cyan)
+        47      background color 7 (white)
+        51      framed
+        52      encircled
+        53      overlined
 _____
 
-# Stuff we leave out because it's annoying
-cat >/dev/null <<_____
-05      slow blink
-06      fast blink
-39      reset foreground color to default
-49      reset background color to default
+    # Stuff we leave out because it's annoying
+    cat >/dev/null <<_____
+        05      slow blink
+        06      fast blink
+        39      reset foreground color to default
+        49      reset background color to default
 _____
+}
 
-[ _"$1" = _-e ] && {
+print_extended_color_table() {
     c=0; while [ $c -le 255 ]; do
         echo "Color $c $(sgr 38 5 $c)Extended foreground color $c$(sgr)"
         c=$(($c + 1))
     done
 }
+
+print_color_table
+[ _"$1" = _-e ] && print_extended_color_table
