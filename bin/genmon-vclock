@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #  Output markup for a vertical clock in an xfce4-genmon-plugin
 #
@@ -22,7 +22,7 @@ wm="<span size='small'>$(date +%a)\n $(date +%0d)</span>\n"
 ct="<span size='xx-small'>$(TZ=US/Central date +%H) CT</span>\n"
 utc="<span size='xx-small'>$(date -u +%H) UT</span>\n"
 hm="<span color='#e0e0e0' size='medium'> $(date +%H)\n $(date +%M)</span>"
-echo "<txt>$sep\n$ct$utc$hm\n$wm$sep</txt>"
+echo -e "<txt>$sep\n$ct$utc$hm\n$wm$sep</txt>"
 
 # Tooltip - markup cannot be used here
 #
@@ -30,4 +30,4 @@ zone() {
     local zone="$1"
     echo "$(TZ="$zone" date +"%Y-%m-%d  %H:%M")  $zone"
 }
-echo "<tool>$(zone US/Central)\n$(zone US/Pacific)\n$(zone UTC)\n$(zone Europe/London)\n$(zone Asia/Tokyo)</tool>"
+echo -e "<tool>$(zone US/Central)\n$(zone US/Pacific)\n$(zone UTC)\n$(zone Europe/London)\n$(zone Asia/Tokyo)</tool>"
