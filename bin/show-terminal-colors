@@ -84,8 +84,9 @@ print_extended_color_table() {
 
 usage() {
     cat >&2 <<-_____
-	Usage: $(basename "$0") [-e]
+	Usage: $(basename "$0") [-e] [-l]
 	    -e      Show extended colors
+	    -l      Pipe ouput through less
 	_____
     exit 2
 }
@@ -93,11 +94,14 @@ usage() {
 ############################################################
 
 opt_extended=false
+output_filter=cat
 while true; do case "$1" in
     -e)     opt_extended=true; shift;;
+    -l)     output_filter='less -+E -e -+F -r'; shift;;
     -*)     usage;;
     *)      break;;
 esac; done
 
-print_color_table
-$opt_extended && print_extended_color_table
+{   print_color_table
+    $opt_extended && print_extended_color_table
+} | $output_filter
