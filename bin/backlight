@@ -3,7 +3,8 @@
 err() { echo 1>&2 "$(basename $0):" "$@"; exit 1; }
 
 bldir=/sys/class/backlight/*/
-cd $bldir || err "Cannot cd to $bldir"
+[ -d $bldir ] || { echo 1>&2 "$(basename $0): No backlight."; exit 0; }
+cd $bldir     || err "Cannot cd to $bldir"
 
 max=$(cat max_brightness)
 cur=$(cat brightness)
