@@ -82,5 +82,22 @@ print_extended_color_table() {
     done
 }
 
+usage() {
+    cat >&2 <<-_____
+	Usage: $(basename "$0") [-e]
+	    -e      Show extended colors
+	_____
+    exit 2
+}
+
+############################################################
+
+opt_extended=false
+while true; do case "$1" in
+    -e)     opt_extended=true; shift;;
+    -*)     usage;;
+    *)      break;;
+esac; done
+
 print_color_table
-[ _"$1" = _-e ] && print_extended_color_table
+$opt_extended && print_extended_color_table
