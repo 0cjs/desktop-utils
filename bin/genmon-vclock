@@ -18,10 +18,10 @@
 sep="<span size='xx-small' strikethrough='true'>                        </span>"
 spc="<span size='xx-small'>                        </span>\n"
 mw="<span color='#a0a0a0' size='small'> $(date +%0d)\n$(date +%a)</span>\n"
-wm="<span color='#a0a0a0' size='small'>$(date +%a)\n $(date +%0d)</span>\n"
+wm="<span color='#a0a0a0' size='small'>$(date +%a)\n$(date +%0d)</span>\n"
 ct="<span color='#a0a0a0' size='xx-small'>$(TZ=US/Central date +%H) CT</span>\n"
 utc="<span color='#a0a0a0' size='xx-small'>$(date -u +%H) UT</span>\n"
-hm="<span color='#e0e0e0' size='medium'> $(date +%H)\n $(date +%M)</span>"
+hm="<span color='#e0e0e0' size='medium'>$(date +%H)\n$(date +%M)</span>"
 echo -e "<txt>$sep\n$ct$utc$hm\n$wm$sep</txt>"
 
 # Tooltip - markup cannot be used here
