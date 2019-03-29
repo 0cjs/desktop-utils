@@ -13,5 +13,5 @@ desktop environment.
 
 [GitHub]: http://github.com/0cjs/desktop-utils/
 [`cjs0`]: https://github.com/dot-home/cjs0
-[`cjsdesktop`]: https://github.com/dot-home/cjs-desktop
+[`cjsdesktop`]: https://github.com/dot-home/cjsdesktop
 [cjs]: http://github.com/0cjs
